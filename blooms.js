@@ -81,7 +81,7 @@ var Blooms = function() {
       {x:-2,y:3},
       {x:-1,y:3},
       {x:0,y:3}];
-  }
 
-  return mtoc[m-1];
+    return mtoc[m-1];
+  }
 }
