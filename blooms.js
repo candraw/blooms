@@ -9,7 +9,7 @@ var Blooms = function() {
 
   var board = new Array(7*7);
   var turn = LIGHT;
-  var half_moves = 0;
+  var quarter_moves = 0;
   var move_history = [];
   var light_captures = 0;
   var dark_captures = 0;
@@ -17,7 +17,7 @@ var Blooms = function() {
   function clear() {
     for (var i = 0; i < 7; i++) {
       for (var j = 0; j < 7; j++) {
-        board[i][j] = 0;
+        board[i][j] = ' ';
       }
     }
   }
@@ -96,11 +96,34 @@ var Blooms = function() {
 
   function isValidMove(m) {
     var coord = moveToCoord(m);
-    return coordOnBoard(coord) && board[coordToIndex(coord)] == 0;
+    var color = m.color;
+
+    if (m.pass) {
+      return (quarter_moves-1)%2 == 1;
+    }
+
+    var rightColor = false;
+    if (turn == LIGHT) {
+      rightColor = color == MINT || color == ORANGE;
+    } else {
+      rightColor = color == RED || color == BLUE;
+    }
+
+    return coordOnBoard(coord) && board[coordToIndex(coord)] == ' ';
   }
 
   function move(m) {
     var loc = m.loc;
     var color = m.color;
+
+    if (isValidMove(m)) {
+      if (!m.pass) {
+        board[coordToIndex(coord)] = color;
+      }
+
+      quarter_moves++;
+    } else {
+      return false;
+    }
   }
 }
