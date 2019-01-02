@@ -11,6 +11,8 @@ var Blooms = function() {
   var turn = LIGHT;
   var half_moves = 0;
   var move_history = [];
+  var light_captures = 0;
+  var dark_captures = 0;
 
   function clear() {
     for (var i = 0; i < 7; i++) {
@@ -18,6 +20,10 @@ var Blooms = function() {
         board[i][j] = 0;
       }
     }
+  }
+
+  function isWon() {
+    return light_captures >= 15 || dark_captures >= 15;
   }
 
   function coordToIndex(c) {
@@ -38,6 +44,9 @@ var Blooms = function() {
   function moveToCoord(m) {
     // moves are numbers from 1 to 37
     // also don't hate me for this
+
+    var location = m.loc;
+
     var mtoc = [{x:0,y:-3},
       {x:1,y:-3},
       {x:2,y:-3},
@@ -83,5 +92,15 @@ var Blooms = function() {
       {x:0,y:3}];
 
     return mtoc[m-1];
+  }
+
+  function isValidMove(m) {
+    var coord = moveToCoord(m);
+    return coordOnBoard(coord) && board[coordToIndex(coord)] == 0;
+  }
+
+  function move(m) {
+    var loc = m.loc;
+    var color = m.color;
   }
 }
