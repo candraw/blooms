@@ -122,6 +122,15 @@ var Blooms = function() {
       }
 
       quarter_moves++;
+
+      if ((quarter_moves-1)%4 == 0 || (quarter_moves-1)%4 == 1) {
+        turn = DARK;
+      } else {
+        turn = LIGHT;
+      }
+
+      move_history.push(m);
+
     } else {
       return false;
     }
