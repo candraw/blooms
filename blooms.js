@@ -34,4 +34,54 @@ var Blooms = function() {
 
     return Math.abs(x) < 4 && Math.abs(y) < 4 && Math.abs(z) < 4;
   }
+
+  function moveToCoord(m) {
+    // moves are numbers from 1 to 37
+    // also don't hate me for this
+    var mtoc = [{x:0,y:-3},
+      {x:1,y:-3},
+      {x:2,y:-3},
+      {x:2,y:-3},
+
+      {x:-1,y:-2},
+      {x:0,y:-2},
+      {x:1,y:-2},
+      {x:2,y:-2},
+      {x:3,y:-2},
+
+      {x:-2,y:-1},
+      {x:-1,y:-2},
+      {x:0,y:-1},
+      {x:1,y:-1},
+      {x:2,y:-1},
+      {x:3,y:-1},
+
+      {x:-3,y:0},
+      {x:-2,y:0},
+      {x:-1,y:0},
+      {x:0,y:0},
+      {x:1,y:0},
+      {x:2,y:0},
+      {x:3,y:0},
+
+      {x:-3,y:1},
+      {x:-2,y:1},
+      {x:-1,y:1},
+      {x:0,y:1},
+      {x:1,y:1},
+      {x:2,y:1},
+
+      {x:-3,y:2},
+      {x:-2,y:2},
+      {x:-1,y:2},
+      {x:0,y:2},
+      {x:1,y:2},
+
+      {x:-3,y:3},
+      {x:-2,y:3},
+      {x:-1,y:3},
+      {x:0,y:3}];
+  }
+
+  return mtoc[m-1];
 }
