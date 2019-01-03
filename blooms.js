@@ -124,7 +124,12 @@ var Blooms = function() {
       rightColor = color == RED || color == BLUE;
     }
 
-    return coordOnBoard(coord) && board[coordToIndex(coord)] == ' ';
+    // on second move check if color is different
+    if (rightColor && (quarter_moves-1)%2==1) {
+      rightColor = color != move_history[quarter_moves-1].color;
+    }
+
+    return coordOnBoard(coord) && board[coordToIndex(coord)] == ' ' && rightColor;
   }
 
   function move(m) {
@@ -147,18 +152,21 @@ var Blooms = function() {
 
       move_history.push(m);
 
-      /*
-      for (group in findGroups()) {
+      var groups = findGroups()
+      console.log(groups)
+
+      groups.forEach(function (group) {
         var locations = group.locations;
         var freedoms = group.freedoms;
 
+        console.log(group);
+
         if (freedoms == 0) {
-          for (loc in locations) {
+          locations.forEach( function(loc) {
             board[coordToIndex(locationToCoord(loc))] = ' ';
-          }
+          });
         }
-      }
-      */
+      });
 
     } else {
       return false;
@@ -189,36 +197,45 @@ var Blooms = function() {
     var visited = [];
 
     for (var loc = 1; loc <= 37; loc++) {
-      // check if already in a group, if so skip
-      for (group in groups) {
-        for (i in group) {
-          if (i == loc) {
-            continue;
-          }
-        }
-      }
-
-      // not in a group: flood to find group
       var group = [];
       var toCheck = [loc];
       var color = getFromLocation(loc);
       var freedoms = 0;
       while (toCheck.length != 0) {
         var current = toCheck.pop();
+        var currentColor = getFromLocation(current);
 
-        if (getFromLocation(current) != color) {
-          if (getFromLocation(current) == ' ') {
-            freedoms++;
+        var alreadyVisited = false;
+        for (var v in visited) {
+          if (v == current) {
+            alreadyVisited = true;
           }
+        }
+        if (alreadyVisited) {
           continue;
         }
 
-        // add neighbors
-        toCheck = toCheck.concat(locationNeighbors(current));
+        if (currentColor == ' ') {
+          freedoms++;
+        }
+
+        if (currentColor != color || currentColor == ' ') {
+          continue;
+        } else {
+          group.push(current);
+          visited.push(current);
+
+          // add neighbors
+          toCheck = toCheck.concat(locationNeighbors(current));
+        }
       }
 
-      groups.push({locations: group, freedoms:freedoms});
+      if (group.length > 0) {
+        groups.push({locations: group, freedoms:freedoms});
+      }
     }
+
+    return groups;
   }
 
   function ascii() {
@@ -259,6 +276,14 @@ var Blooms = function() {
 
     move: function(m) {
       return move(m);
+    },
+
+    score: function() {
+      return {light:light_captures, dark:dark_captures};
+    },
+
+    isWon: function() {
+      return isWon();
     }
   };
 }
