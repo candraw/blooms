@@ -191,7 +191,6 @@ var Blooms = function() {
     return potentialNeighbors.filter(coordOnBoard).map(coordToLocation);
   }
 
-  // TODO: infinite loop
   function findGroups() {
     var groups = [];
     var visited = [];
@@ -284,6 +283,18 @@ var Blooms = function() {
 
     isWon: function() {
       return isWon();
+    },
+
+    isValidMove: function(m) {
+      return isValidMove(m);
+    },
+
+    getFromLocation: function(loc) {
+      return getFromLocation(loc);
+    },
+
+    locationToCoord: function(loc) {
+      return locationToCoord(loc);
     }
   };
 }
