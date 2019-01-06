@@ -33,9 +33,9 @@ var Blooms = function() {
     return x + 7*y;
   }
 
-  function coordOnBoard(c) {
-    var x = c.x;
-    var y = c.y;
+  function coordOnBoard(coord) {
+    var x = coord.x;
+    var y = coord.y;
     var z = -(x+y);
 
     return Math.abs(x) < 4 && Math.abs(y) < 4 && Math.abs(z) < 4;
@@ -153,13 +153,10 @@ var Blooms = function() {
       move_history.push(m);
 
       var groups = findGroups()
-      console.log(groups)
 
       groups.forEach(function (group) {
         var locations = group.locations;
         var freedoms = group.freedoms;
-
-        console.log(group);
 
         if (freedoms == 0) {
           locations.forEach( function(loc) {

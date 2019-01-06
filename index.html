@@ -10,8 +10,19 @@
     <script src="bloomsboard.js"></script>
   <script>
     var b = Blooms();
+    b.clear();
     var board = BloomsBoard(b, "board");
-    board.draw();
+
+    for (var i = 0; i < 50; i++) {
+      var moves = b.moves();
+      var rand = Math.floor(Math.random() * moves.length)+1;
+      var color = ['m', 'r', 'b', 'o'][i%4];
+
+      console.log(moves.length);
+
+      b.move({loc: rand, color: color});
+      board.draw();
+    }
   </script>
   </body>
 </html>

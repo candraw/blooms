@@ -4,7 +4,21 @@ function BloomsBoard(game, boardid) {
   
   var size = 35;
 
-  function drawHexagon(x, y, size) {
+  function pieceToColor(piece) {
+    if (piece == 'm') {
+      return 'cyan';
+    } else if (piece == 'o') {
+      return 'orange';
+    } else if (piece == 'r') {
+      return 'red';
+    } else if (piece == 'b') {
+      return 'blue';
+    }
+
+    return 'lightgrey';
+  }
+
+  function drawHexagon(x, y, size, color) {
     var dphi = Math.PI/3;
     var phi = Math.PI/6;
     context.moveTo(x + Math.cos(phi), y + Math.sin(phi));
@@ -17,7 +31,8 @@ function BloomsBoard(game, boardid) {
       phi += dphi;
     }
 
-    context.stroke();
+    context.fillStyle = color;
+    context.fill();
   }
 
   function coordToPixel(c) {
@@ -33,7 +48,9 @@ function BloomsBoard(game, boardid) {
       for (var i = 1; i <= 37; i++) {
         var coord = game.locationToCoord(i);
         var point = coordToPixel(coord);
-        drawHexagon(point.x, point.y, size);
+        var color = pieceToColor(game.getFromLocation(i));
+
+        drawHexagon(point.x, point.y, size, color);
       }
     },
   };
