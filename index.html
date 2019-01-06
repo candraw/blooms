@@ -13,16 +13,18 @@
     b.clear();
     var board = BloomsBoard(b, "board");
 
-    for (var i = 0; i < 50; i++) {
+    var i = 0;
+    setInterval(function () {
       var moves = b.moves();
       var rand = Math.floor(Math.random() * moves.length)+1;
       var color = ['m', 'r', 'b', 'o'][i%4];
+      i++;
 
       console.log(moves.length);
 
       b.move({loc: rand, color: color});
       board.draw();
-    }
+    }, 500);
   </script>
   </body>
 </html>

@@ -240,9 +240,8 @@ var Blooms = function() {
 
   function moves() {
     var m = [];
-    var color = turn == LIGHT ? MINT : RED;
     for (var i = 1; i <= 37; i++) {
-      if (isValidMove({loc:i, color:color})) {
+      if (getFromLocation(i) == ' ') {
         m.push(i);
       }
     }
