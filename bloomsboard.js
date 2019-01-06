@@ -8,16 +8,17 @@ function BloomsBoard(game, boardid) {
     context.moveTo(x + Math.cos(phi), y + Math.sin(phi));
     context.beginPath();
 
-    for (; phi < 2*Math.PI; phi += dphi) {
+    for (var i = 0; i < 7; i++) {
       context.lineTo(x + (Math.cos(phi)*size), y + (Math.sin(phi)*size));
+      phi += dphi;
     }
 
-    context.stroke();
+    context.fill();
   }
 
   return {
     draw: function() {
-      drawHexagon(100, 100, 100);
+      drawHexagon(250, 250, 100);
     },
   };
 }
