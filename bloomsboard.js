@@ -33,8 +33,6 @@ function BloomsBoard(game, boardid) {
       for (var i = 1; i <= 37; i++) {
         var coord = game.locationToCoord(i);
         var point = coordToPixel(coord);
-        if (i == 11)
-          console.log(coord, point);
         drawHexagon(point.x, point.y, size);
       }
     },
