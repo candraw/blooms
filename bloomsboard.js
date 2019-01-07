@@ -45,6 +45,10 @@ function BloomsBoard(game, boardid) {
 
   return {
     draw: function() {
+      context.fillStyle = 'white';
+      context.rect(0, 0, 500, 500);
+      context.fill();
+
       for (var i = 1; i <= 37; i++) {
         var coord = game.locationToCoord(i);
         var point = coordToPixel(coord);
