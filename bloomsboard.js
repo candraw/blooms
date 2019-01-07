@@ -12,11 +12,22 @@ function BloomsBoard(game, boardid) {
     var y = 2/3*py/size;
 
     var rounded = hexRound({x: x, y: y});
+    var side = x < rounded.x ? "left" : "right";
 
-    if (x < rounded.x) {
-      console.log("left");
+    console.log(rounded);
+    
+    if (game.getTurn() == game.LIGHT) {
+      if (side == "left") {
+        game.move({loc: game.coordToLocation(rounded), color:game.MINT});
+      } else {
+        game.move({loc: game.coordToLocation(rounded), color:game.ORANGE});
+      }
     } else {
-      console.log("right");
+      if (side == "left") {
+        game.move({loc: game.coordToLocation(rounded), color:game.BLUE});
+      } else {
+        game.move({loc: game.coordToLocation(rounded), color:game.RED});
+      }
     }
 
     draw();
