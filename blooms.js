@@ -15,6 +15,11 @@ var Blooms = function() {
   var dark_captures = 0;
 
   function clear() {
+    turn = LIGHT;
+    quarter_moves = 0;
+    light_captures = 0;
+    dark_captures = 0;
+    move_history = [];
     for (var i = 0; i < 7; i++) {
       for (var j = 0; j < 7; j++) {
         board[i*7 + j] = ' ';
@@ -168,6 +173,8 @@ var Blooms = function() {
     } else {
       return false;
     }
+
+    return true;
   }
 
   function getFromLocation(loc) {

@@ -4,6 +4,44 @@ function BloomsBoard(game, boardid) {
   
   var size = 35;
 
+  board.addEventListener('click', function(e) {
+    var px = e.pageX - board.offsetLeft - 250;
+    var py = e.pageY - board.offsetTop - 250;
+
+    var x = (Math.sqrt(3)/3 * px - 1/3*py) / size;
+    var y = 2/3*py/size;
+
+    var rounded = hexRound({x: x, y: y});
+
+    if (x < rounded.x) {
+      console.log("left");
+    } else {
+      console.log("right");
+    }
+
+    draw();
+  }, false);
+
+  function hexRound(c) {
+    var rx = Math.round(c.x);
+    var ry = Math.round(c.y);
+    var rz = Math.round(-c.x - c.y);
+
+    var dx = Math.abs(rx - c.x);
+    var dy = Math.abs(ry - c.y);
+    var dz = Math.abs(rz - c.z);
+
+    if (dx > dy && dx > dz) {
+      rx = -ry-rz;
+    } else if (dy > dz) {
+      ry = -rx-rz;
+    } else {
+      rz = -rx-ry;
+    }
+
+    return {x: rx, y: ry};
+  }
+
   function pieceToColor(piece) {
     if (piece == 'm') {
       return 'cyan';
@@ -43,8 +81,7 @@ function BloomsBoard(game, boardid) {
             y: 3/2*y*size+250};
   }
 
-  return {
-    draw: function() {
+  function draw() {
       context.fillStyle = 'white';
       context.rect(0, 0, 500, 500);
       context.fill();
@@ -56,6 +93,11 @@ function BloomsBoard(game, boardid) {
 
         drawHexagon(point.x, point.y, size, color);
       }
+  }
+
+  return {
+    draw: function() {
+      draw()
     },
   };
 }

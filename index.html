@@ -14,6 +14,7 @@
     var board = BloomsBoard(b, "board");
 
     var i = 0;
+    /*
     setInterval(function () {
       var moves = b.moves();
       var rand = Math.floor(Math.random() * moves.length)+1;
@@ -22,9 +23,12 @@
 
       console.log(moves.length);
 
-      b.move({loc: rand, color: color});
+      var valid = b.move({loc: rand, color: color});
+      if (!valid)
+        console.log(rand, color);
       board.draw();
     }, 500);
+    */
   </script>
   </body>
 </html>
