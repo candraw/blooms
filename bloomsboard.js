@@ -4,7 +4,7 @@ function BloomsBoard(game, boardid) {
   
   var size = 35;
 
-  board.addEventListener('click', function(e) {
+  function handleClick(e) {
     var px = e.pageX - board.offsetLeft - 250;
     var py = e.pageY - board.offsetTop - 250;
 
@@ -31,7 +31,7 @@ function BloomsBoard(game, boardid) {
     }
 
     draw();
-  }, false);
+  }
 
   function hexRound(c) {
     var rx = Math.round(c.x);
@@ -109,6 +109,10 @@ function BloomsBoard(game, boardid) {
   return {
     draw: function() {
       draw()
+    },
+
+    handleClick: function (e) {
+      handleClick(e);
     },
   };
 }

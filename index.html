@@ -12,23 +12,12 @@
     var b = Blooms();
     b.clear();
     var board = BloomsBoard(b, "board");
+    board.draw();
 
-    var i = 0;
-    /*
-    setInterval(function () {
-      var moves = b.moves();
-      var rand = Math.floor(Math.random() * moves.length)+1;
-      var color = ['m', 'r', 'b', 'o'][i%4];
-      i++;
+    document.getElementById("board").addEventListener('click', function (e) {
+      board.handleClick(e);
+    }, false);
 
-      console.log(moves.length);
-
-      var valid = b.move({loc: rand, color: color});
-      if (!valid)
-        console.log(rand, color);
-      board.draw();
-    }, 500);
-    */
   </script>
   </body>
 </html>
