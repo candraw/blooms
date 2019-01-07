@@ -103,7 +103,7 @@ var Blooms = function() {
     else if (c.y == -2)
       return c.x + 6;
     else if (c.y == -1)
-      return c.x + 11;
+      return c.x + 12;
     else if (c.y == 0)
       return c.x + 19;
     else if (c.y == 1)
@@ -171,6 +171,7 @@ var Blooms = function() {
       });
 
     } else {
+      console.log("invalid move");
       return false;
     }
 
@@ -284,6 +285,10 @@ var Blooms = function() {
       return {light:light_captures, dark:dark_captures};
     },
 
+    getTurn: function() {
+      return turn;
+    },
+
     isWon: function() {
       return isWon();
     },
@@ -298,6 +303,10 @@ var Blooms = function() {
 
     locationToCoord: function(loc) {
       return locationToCoord(loc);
-    }
+    },
+
+    coordToLocation: function(c) {
+      return coordToLocation(c);
+    },
   };
 }
