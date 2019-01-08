@@ -165,7 +165,7 @@ var Blooms = function() {
         var locations = group.locations;
         var freedoms = group.freedoms;
 
-        if (freedoms == 0 && isEnemyPieceAt(locations[0])) {
+        if (freedoms == 0 /*&& isEnemyPieceAt(locations[0])*/) {
           locations.forEach( function(loc) {
             board[coordToIndex(locationToCoord(loc))] = ' ';
           });
@@ -207,48 +207,44 @@ var Blooms = function() {
   }
 
   function findGroups() {
-    var groups = [];
-    var visited = [];
+    var toVisit = [];
+    for (var i = 1; i <= 37; i++)
+      toVisit.push(i);
 
-    for (var loc = 1; loc <= 37; loc++) {
-      var group = [];
-      var toCheck = [loc];
-      var color = getFromLocation(loc);
-      var freedoms = 0;
-      while (toCheck.length != 0) {
+    var groups = [];
+
+    while (toVisit.length > 0) {
+      var initial = toVisit.pop();
+      var groupColor = getFromLocation(initial);
+      var toCheck = locationNeighbors(initial);
+      var checked = [];
+
+      var group = [initial];
+      var hasFreedoms = false;
+
+      while (toCheck.length > 0) {
         var current = toCheck.pop();
+        checked.push(current);
         var currentColor = getFromLocation(current);
 
-        var alreadyVisited = false;
-        for (var v in visited) {
-          if (v == current) {
-            alreadyVisited = true;
-          }
-        }
-        if (alreadyVisited) {
-          continue;
-        }
-
-        if (currentColor == ' ') {
-          freedoms++;
-        }
-
-        if (currentColor != color || currentColor == ' ') {
-          continue;
-        } else {
+        if (currentColor == groupColor) {
           group.push(current);
-          visited.push(current);
+          // remove current from toVisit
+          toVisit = toVisit.filter(x => x != current);
+          toCheck = toCheck.concat(locationNeighbors(current).filter(x =>
+            checked.indexOf(x) == -1
+          ));
 
-          // add neighbors
-          toCheck = toCheck.concat(locationNeighbors(current));
+        } else if (currentColor == ' ') {
+          hasFreedoms = true;
         }
       }
 
-      if (group.length > 0) {
-        groups.push({locations: group, freedoms:freedoms});
-      }
+      if (groupColor != ' ')
+        groups.push({locations: group, freedoms: hasFreedoms?1:0});
     }
 
+    console.log(groups);
     return groups;
   }
 
