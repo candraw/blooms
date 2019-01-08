@@ -137,6 +137,16 @@ var Blooms = function() {
     return coordOnBoard(coord) && board[coordToIndex(coord)] == ' ' && rightColor;
   }
 
+  function isEnemyPieceAt(loc) {
+    var piece = getFromLocation(loc);
+
+    if (turn == LIGHT) {
+      return piece == RED || piece == BLUE;
+    } else {
+      return piece == MINT || piece == ORANGE;
+    }
+  }
+
   function move(m) {
     var loc = m.loc;
     var color = m.color;
@@ -147,14 +157,6 @@ var Blooms = function() {
         board[coordToIndex(coord)] = color;
       }
 
-      quarter_moves++;
-
-      if ((quarter_moves-1)%4 == 0 || (quarter_moves-1)%4 == 1) {
-        turn = DARK;
-      } else {
-        turn = LIGHT;
-      }
-
       move_history.push(m);
 
       var groups = findGroups()
@@ -163,12 +165,20 @@ var Blooms = function() {
         var locations = group.locations;
         var freedoms = group.freedoms;
 
-        if (freedoms == 0) {
+        if (freedoms == 0 && isEnemyPieceAt(locations[0])) {
           locations.forEach( function(loc) {
             board[coordToIndex(locationToCoord(loc))] = ' ';
           });
         }
       });
+
+      quarter_moves++;
+
+      if ((quarter_moves-1)%4 == 0 || (quarter_moves-1)%4 == 1) {
+        turn = DARK;
+      } else {
+        turn = LIGHT;
+      }
 
     } else {
       console.log("invalid move");
