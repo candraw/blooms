@@ -161,16 +161,17 @@ var Blooms = function() {
 
       var groups = findGroups()
 
-      groups.forEach(function (group) {
-        var locations = group.locations;
-        var freedoms = group.freedoms;
+      if ((quarter_moves-1)%2 == 1)
+        groups.forEach(function (group) {
+          var locations = group.locations;
+          var freedoms = group.freedoms;
 
-        if (freedoms == 0 /*&& isEnemyPieceAt(locations[0])*/) {
-          locations.forEach( function(loc) {
-            board[coordToIndex(locationToCoord(loc))] = ' ';
-          });
-        }
-      });
+          if (freedoms == 0 /*&& isEnemyPieceAt(locations[0])*/) {
+            locations.forEach( function(loc) {
+              board[coordToIndex(locationToCoord(loc))] = ' ';
+            });
+          }
+        });
 
       quarter_moves++;
 
