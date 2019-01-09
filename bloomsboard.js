@@ -16,9 +16,9 @@ function BloomsBoard(game, boardid) {
 
     console.log(rounded);
     
-    if (game.getTurn() == game.LIGHT) {
+    if (game.getTurn() == game.RED) {
       if (side == "left") {
-        game.move({loc: game.coordToLocation(rounded), color:game.MINT});
+        game.move({loc: game.coordToLocation(rounded), color:game.RED});
       } else {
         game.move({loc: game.coordToLocation(rounded), color:game.ORANGE});
       }
@@ -26,7 +26,7 @@ function BloomsBoard(game, boardid) {
       if (side == "left") {
         game.move({loc: game.coordToLocation(rounded), color:game.BLUE});
       } else {
-        game.move({loc: game.coordToLocation(rounded), color:game.RED});
+        game.move({loc: game.coordToLocation(rounded), color:game.MINT});
       }
     }
 

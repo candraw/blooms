@@ -1,21 +1,19 @@
 var Blooms = function() {
-  var LIGHT = 'l';
-  var DARK = 'd';
-
-  var MINT = 'm';
-  var BLUE = 'b';
   var RED = 'r';
+  var BLUE = 'b';
+
   var ORANGE = 'o';
+  var MINT = 'm';
 
   var board = new Array(7*7);
-  var turn = LIGHT;
+  var turn = RED;
   var quarter_moves = 0;
   var move_history = [];
   var light_captures = 0;
   var dark_captures = 0;
 
   function clear() {
-    turn = LIGHT;
+    turn = RED;
     quarter_moves = 0;
     light_captures = 0;
     dark_captures = 0;
@@ -123,10 +121,10 @@ var Blooms = function() {
     }
 
     var rightColor = false;
-    if (turn == LIGHT) {
-      rightColor = color == MINT || color == ORANGE;
+    if (turn == RED) {
+      rightColor = color == RED || color == ORANGE;
     } else {
-      rightColor = color == RED || color == BLUE;
+      rightColor = color == BLUE || color == MINT;
     }
 
     // on second move check if color is different
@@ -140,10 +138,10 @@ var Blooms = function() {
   function isEnemyPieceAt(loc) {
     var piece = getFromLocation(loc);
 
-    if (turn == LIGHT) {
-      return piece == RED || piece == BLUE;
+    if (turn == RED) {
+      return piece == BLUE || piece == MINT;
     } else {
-      return piece == MINT || piece == ORANGE;
+      return piece == RED || piece == ORANGE;
     }
   }
 
@@ -176,9 +174,9 @@ var Blooms = function() {
       quarter_moves++;
 
       if ((quarter_moves-1)%4 == 0 || (quarter_moves-1)%4 == 1) {
-        turn = DARK;
+        turn = BLUE;
       } else {
-        turn = LIGHT;
+        turn = RED;
       }
 
     } else {
@@ -265,8 +263,8 @@ var Blooms = function() {
   }
 
   return {
-    LIGHT:LIGHT,
-    DARK:DARK,
+    RED:RED,
+    BLUE:BLUE,
     MINT:MINT,
     ORANGE:ORANGE,
     BLUE:BLUE,
