@@ -9,14 +9,14 @@ var Blooms = function() {
   var turn = RED;
   var quarter_moves = 0;
   var move_history = [];
-  var light_captures = 0;
-  var dark_captures = 0;
+  var red_captures = 0;
+  var blue_captures = 0;
 
   function clear() {
     turn = RED;
     quarter_moves = 0;
-    light_captures = 0;
-    dark_captures = 0;
+    red_captures = 0;
+    blue_captures = 0;
     move_history = [];
     for (var i = 0; i < 7; i++) {
       for (var j = 0; j < 7; j++) {
@@ -25,8 +25,26 @@ var Blooms = function() {
     }
   }
 
+  function loadState(state) {
+    board         = state.board;
+    turn          = state.turn;
+    quarter_moves = state.quarter_moves;
+    move_history  = state.move_history;
+    red_captures  = state.red_captures;
+    blue_captures = state.blue_captures;
+  }
+
+  function getState() {
+    return {board: board.concat(), // copy with concat
+      turn: turn,
+      quarter_moves: quarter_moves,
+      move_history: move_history.concat(),
+      red_captures: red_captures,
+      blue_captures: blue_captures,};
+  }
+
   function isWon() {
-    return light_captures >= 15 || dark_captures >= 15;
+    return red_captures >= 15 || blue_captures >= 15;
   }
 
   function coordToIndex(c) {
@@ -164,10 +182,16 @@ var Blooms = function() {
           var locations = group.locations;
           var freedoms = group.freedoms;
 
-          if (freedoms == 0 /*&& isEnemyPieceAt(locations[0])*/) {
+          if (freedoms == 0 && isEnemyPieceAt(locations[0])) {
             locations.forEach( function(loc) {
               board[coordToIndex(locationToCoord(loc))] = ' ';
             });
+
+            if (turn == RED) {
+              red_captures += locations.length;
+            } else {
+              blue_captures += locations.length;
+            }
           }
         });
 
@@ -178,7 +202,6 @@ var Blooms = function() {
       } else {
         turn = RED;
       }
-
     } else {
       console.log("invalid move");
       return false;
@@ -243,7 +266,6 @@ var Blooms = function() {
         groups.push({locations: group, freedoms: hasFreedoms?1:0});
     }
 
-    console.log(groups);
     return groups;
   }
 
@@ -252,14 +274,28 @@ var Blooms = function() {
   }
 
   function moves() {
-    var m = [];
+    if (isWon()) {
+      return [];
+    }
+
+    var freeLocations = [];
+    var potentialMoves = [];
+
     for (var i = 1; i <= 37; i++) {
       if (getFromLocation(i) == ' ') {
-        m.push(i);
+        freeLocations.push(i);
       }
     }
 
-    return m;
+    freeLocations.forEach(function (loc) {
+      [RED, ORANGE, BLUE, MINT].forEach(function (color) {
+        potentialMoves.push({loc:loc, color:color});
+      });
+    });
+
+    potentialMoves.push({pass:true});
+
+    return potentialMoves.filter(isValidMove);
   }
 
   return {
@@ -287,7 +323,7 @@ var Blooms = function() {
     },
 
     score: function() {
-      return {light:light_captures, dark:dark_captures};
+      return {red:red_captures, blue:blue_captures};
     },
 
     getTurn: function() {
@@ -312,6 +348,14 @@ var Blooms = function() {
 
     coordToLocation: function(c) {
       return coordToLocation(c);
+    },
+
+    getState: function() {
+      return getState();
+    },
+
+    loadState: function(state) {
+      loadState(state);
     },
   };
 }
